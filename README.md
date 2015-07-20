@@ -49,7 +49,7 @@ server.route([
     method: 'GET',
     path: '/{path*}',
     handler: function (request, reply) {
-      return reply('Error 404').code(404);
+      return reply('Page not found').code(404);
     },
     config: {
       id: 'error'
@@ -67,9 +67,11 @@ You'll notice the `config.id` property. This is what we use to help **Glee** ide
 To register the plugin, simply follow the typical plugin registration pattern outlined in the Hapi docs [here](http://hapijs.com/tutorials/plugins#loading-a-plugin).
 
 ```javascript
+var Glee = require('hapi-glee');
+
 server.register([
   {
-    register: require('Glee'),
+    register: Glee,
     options: {
       errorRoute: server.lookup('error')
     }
