@@ -1,6 +1,6 @@
 {
   "name": "hapi-glee",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Specify environment-specific scopes for your routes with ease.",
   "main": "index.js",
   "scripts": {
