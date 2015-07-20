@@ -55,7 +55,7 @@ lab.experiment('Plugin', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRouteId: 'error',
+        errorRoute: server.lookup('error'),
         environment: 'test'
       }
     }, function (err) {
@@ -97,7 +97,7 @@ lab.experiment('Requests', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRouteId: 'error',
+        errorRoute: server.lookup('error'),
         environment: 'test'
       }
     }, function (err) {
@@ -130,7 +130,7 @@ lab.experiment('Requests', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRouteId: 'error',
+        errorRoute: server.lookup('error'),
         environment: 'test'
       }
     }, function (err) {
@@ -163,7 +163,7 @@ lab.experiment('Requests', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRouteId: 'error'
+        errorRoute: 'error'
       }
     }, function (err) {
       server.start(function () {
@@ -195,7 +195,7 @@ lab.experiment('Requests', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRouteId: 'error',
+        errorRoute: server.lookup('error'),
         environment: 'test'
       }
     }, function (err) {
@@ -228,7 +228,40 @@ lab.experiment('Requests', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRouteId: 'error',
+        errorRoute: 'error',
+        environment: 'outofscope'
+      }
+    }, function (err) {
+      server.start(function () {
+        request.get('localhost:3000/test').end(function (err, res) {
+          Code.expect(res).to.exist();
+          Code.expect(res.status).to.equal(404);
+          done();
+        });
+      });
+    });
+  });
+
+  lab.test('should handle the error route as an id string', function (done) {
+    server.route([
+      {
+        method: 'GET',
+        path: '/test',
+        handler: function (requst, reply) {
+          return reply();
+        },
+        config: {
+          app: {
+            scope: 'test'
+          }
+        }
+      }, errorRoute
+    ]);
+
+    server.register({
+      register: Plugin,
+      options: {
+        errorRoute: server.lookup('error'),
         environment: 'outofscope'
       }
     }, function (err) {

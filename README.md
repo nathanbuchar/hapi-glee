@@ -1,6 +1,6 @@
 # hapi-route-scope [![Build Status](https://travis-ci.org/nathanbuchar/hapi-route-scope.svg?branch=master)](https://travis-ci.org/nathanbuchar/hapi-route-scope)
 
-Don't want `/docs` to show up on production? use `hapi-route-scope`! `hapi-route-scope` allows you to specify environment scopes for your routes with ease.
+Don't want `/docs` to show up on production? use `hapi-route-scope`! `hapi-route-scope` allows you to specify environment-specific scopes for your routes with ease.
 
 
 ### Install
@@ -21,7 +21,7 @@ server.register([
   {
     register: require('hapi-route-scope'),
     options: {
-      errorRouteId: 'error',
+      errorRoute: server.lookup('error'),
       environment: 'development'
     }
   }
@@ -30,7 +30,7 @@ server.register([
 
 ##### options
 
-* `errorRoutId` - `string` - **Required** The `id` of the route which you would like to handle requested routes that are "out of scope". Follow the instructions below to set up your error route.
+* `errorRoute` - `object|string` - **Required** This may be either a direct reference to the error route itself, or the `id` of the error route which you would like to handle requested routes that are "out of scope". Follow the instructions below to set up your error route.
 
 * `environment` - `string` - **Optional** The environment with which to test our route scopes against. Default: `process.env.NODE_ENV`.
 
@@ -55,7 +55,7 @@ server.route([
 ]);
 ```
 
-You'll notice the `config.id` property. This is what we use to help `hapi-route-scope` identify the correct route to redirect to if the requested route is out of scope. This `id` must be the same as the `errorRouteId` property when registering `hapi-route-scope`.
+You'll notice the `config.id` property. This is what we use to help `hapi-route-scope` identify the correct route to redirect to if the requested route is out of scope. This `id` must be the same as id that we used to look up the route in the `errorRoute` property when registering `hapi-route-scope`.
 
 
 #### Setting up Route Scopes
