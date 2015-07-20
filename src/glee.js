@@ -1,5 +1,5 @@
 /**
- * @fileoverview This plugins validates the scope of a route so that it may only
+ * @fileoverview This plugin validates the scope of a route so that it may only
  *   be accessible in specified node environments.
  * @author Nathan Buchar
  */
