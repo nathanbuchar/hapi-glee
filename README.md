@@ -1,6 +1,6 @@
 # hapi-route-scope [![Build Status](https://travis-ci.org/nathanbuchar/hapi-route-scope.svg?branch=master)](https://travis-ci.org/nathanbuchar/hapi-route-scope)
 
-Scope routes to specific node environments.
+Scope routes to specific Node environments.
 
 
 ### Install
