@@ -1,4 +1,4 @@
-# Glee for Hapi [![Build Status](https://travis-ci.org/nathanbuchar/hapi-glee.svg?branch=master)](https://travis-ci.org/nathanbuchar/hapi-glee)
+# Glee for Hapi [![Build Status](https://travis-ci.org/nathanbuchar/glee.svg?branch=master)](https://travis-ci.org/nathanbuchar/glee)
 
 Don't want `/docs` to show up on production? use **Glee**! **Glee** allows you to specify environment-specific scopes for your routes with ease.
 
@@ -6,7 +6,7 @@ Don't want `/docs` to show up on production? use **Glee**! **Glee** allows you t
 ### Install
 
 ```bash
-$ npm install hapi-glee
+$ npm install glee
 ```
 
 
@@ -67,7 +67,7 @@ You'll notice the `config.id` property. This is what we use to help **Glee** ide
 To register the plugin, simply follow the typical plugin registration pattern outlined in the Hapi docs [here](http://hapijs.com/tutorials/plugins#loading-a-plugin).
 
 ```javascript
-var Glee = require('hapi-glee');
+var Glee = require('glee');
 
 server.register([
   {
