@@ -1,6 +1,6 @@
 {
   "name": "hapi-route-scope",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Specify environment-specific scopes for your routes with ease.",
   "main": "index.js",
   "scripts": {
