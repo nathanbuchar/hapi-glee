@@ -1,0 +1,29 @@
+{
+  "name": "hapi-space-madness",
+  "version": "0.1.0",
+  "description": "Scope routes to specific Node environments.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/lab/bin/lab -c",
+    "test-cover": "./node_modules/lab/bin/lab -c -r html -o ./test/artifacts/coverage.html && open ./test/artifacts/coverage.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nathanbuchar/hapi-route-scope"
+  },
+  "keywords": [],
+  "author": "Nathan Buchar <hello@nathanbuchar.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nathanbuchar/hapi-route-scope/issues"
+  },
+  "homepage": "",
+  "devDependencies": {
+    "hapi": "^8.x.x"
+  },
+  "dependencies": {
+    "code": "^1.4.1",
+    "lab": "^5.13.0",
+    "superagent": "^1.2.0"
+  }
+}
