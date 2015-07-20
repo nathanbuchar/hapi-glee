@@ -9,14 +9,14 @@
 var helpers = require('./helpers');
 
 /**
- * @function _scope
+ * @function _glee
  * @description Validates the scope of a requested route at the `preAuth`
  *   Hapi lifecycle extension.
  * @param {Hapi.Server} server
  * @param {object} options
  */
-var _scope = function (server, options) {
+var _glee = function (server, options) {
   server.ext('onPreAuth', helpers.validateScope.call(null, server, options));
 };
 
-module.exports = _scope;
+module.exports = _glee;

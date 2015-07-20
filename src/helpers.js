@@ -1,31 +1,35 @@
 /**
- * @fileoverview Scope plugin helpers.
+ * @fileoverview Glee plugin helpers.
  * @author Nathan Buchar
  */
 
 'use strict';
 
 /**
- * @function _parseScope
- * @description Parses the scope so that we always return an array.
- * @param {string|array} scope
- * @return {array}
+ * @function _isValidScope
+ * @description Validates that the connection label(s) exist within the given
+ *   scope. If the scope not defined, return true.
+ * @param {array} scope
+ * @param {Hapi.Server} server
+ * @return {bool}
  */
-var _parseScope = exports.parseScope = function (scope) {
-  return typeof scope === 'string' ? [scope] : scope;
+var _isValidScope = exports.isValidScope = function (scope, server) {
+  return ! scope || server.select(scope).connections.length > 0;
 };
 
 /**
- * @function _isValidScope
- * @description Validates that the environment exists within the given scope. If
- *   the scope is undefined, return true.
- * @param {array} scope
- * @param {bool} [invert]
- * @param {string} [env]
- * @return {bool}
+ * @function _getErrorRoute
+ * @description Fetches the error route.
+ * @param {string|object} errorRoute
+ * @param {Hapi.Server} server
+ * @return {object}
  */
-var _isValidScope = exports.isValidScope = function (scope, env) {
-  return ! scope || _parseScope(scope).indexOf(env) >= 0;
+var _getErrorRoute = exports.getErrorRoute = function (errorRoute, server) {
+  if (typeof errorRoute === 'string') {
+    return server.lookup(errorRoute);
+  } else {
+    return errorRoute;
+  }
 };
 
 /**
@@ -39,16 +43,11 @@ var _validateScope = exports.validateScope = function (server, options) {
   return function (request, reply) {
     var route = request.route;
     var scope = route.settings.app.scope;
-    var env = options.environment || process.env.NODE_ENV;
 
     // If this route is not within the correct scope, alter the requested route
     // to the error route whose `id` is defined by `options.errorRoute`.
-    if (! _isValidScope(scope, env)) {
-      if (typeof options.errorRoute === 'string') {
-        request.route = server.lookup(options.errorRoute);
-      } else {
-        request.route = options.errorRoute;
-      }
+    if (! _isValidScope(scope, server)) {
+      request.route = _getErrorRoute(options.errorRoute, server);
     }
 
     return reply.continue();

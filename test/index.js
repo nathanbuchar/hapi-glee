@@ -71,7 +71,8 @@ lab.experiment('Requests', function () {
     server = new Hapi.Server();
 
     server.connection({
-      port: process.env.PORT || 3000
+      port: process.env.PORT || 3000,
+      labels: ['test']
     });
 
     done();
@@ -97,8 +98,7 @@ lab.experiment('Requests', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRoute: server.lookup('error'),
-        environment: 'test'
+        errorRoute: server.lookup('error')
       }
     }, function (err) {
       server.start(function () {
@@ -130,40 +130,7 @@ lab.experiment('Requests', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRoute: server.lookup('error'),
-        environment: 'test'
-      }
-    }, function (err) {
-      server.start(function () {
-        request.get('localhost:3000/test').end(function (err, res) {
-          Code.expect(res).to.exist();
-          Code.expect(res.status).to.equal(200);
-          done();
-        });
-      });
-    });
-  });
-
-  lab.test('fallback to process.env.NODE_ENV if no env is set', function (done) {
-    server.route([
-      {
-        method: 'GET',
-        path: '/test',
-        handler: function (requst, reply) {
-          return reply();
-        },
-        config: {
-          app: {
-            scope: 'test'
-          }
-        }
-      }, errorRoute
-    ]);
-
-    server.register({
-      register: Plugin,
-      options: {
-        errorRoute: 'error'
+        errorRoute: server.lookup('error')
       }
     }, function (err) {
       server.start(function () {
@@ -195,8 +162,7 @@ lab.experiment('Requests', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRoute: server.lookup('error'),
-        environment: 'test'
+        errorRoute: server.lookup('error')
       }
     }, function (err) {
       server.start(function () {
@@ -219,7 +185,7 @@ lab.experiment('Requests', function () {
         },
         config: {
           app: {
-            scope: 'test'
+            scope: 'outofscope'
           }
         }
       }, errorRoute
@@ -228,8 +194,7 @@ lab.experiment('Requests', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRoute: 'error',
-        environment: 'outofscope'
+        errorRoute: 'error'
       }
     }, function (err) {
       server.start(function () {
@@ -252,7 +217,7 @@ lab.experiment('Requests', function () {
         },
         config: {
           app: {
-            scope: 'test'
+            scope: 'outofscope'
           }
         }
       }, errorRoute
@@ -261,8 +226,7 @@ lab.experiment('Requests', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRoute: server.lookup('error'),
-        environment: 'outofscope'
+        errorRoute: server.lookup('error')
       }
     }, function (err) {
       server.start(function () {

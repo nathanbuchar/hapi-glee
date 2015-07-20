@@ -1,5 +1,5 @@
 {
-  "name": "hapi-route-scope",
+  "name": "hapi-glee",
   "version": "0.1.2",
   "description": "Specify environment-specific scopes for your routes with ease.",
   "main": "index.js",
@@ -9,10 +9,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nathanbuchar/hapi-route-scope"
+    "url": "https://github.com/nathanbuchar/hapi-glee"
   },
   "keywords": [
     "hapi",
+    "glee",
     "route",
     "scope",
     "plugin"
@@ -20,7 +21,7 @@
   "author": "Nathan Buchar <hello@nathanbuchar.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nathanbuchar/hapi-route-scope/issues"
+    "url": "https://github.com/nathanbuchar/hapi-glee/issues"
   },
   "homepage": "",
   "devDependencies": {

@@ -1,43 +1,46 @@
-# hapi-route-scope [![Build Status](https://travis-ci.org/nathanbuchar/hapi-route-scope.svg?branch=master)](https://travis-ci.org/nathanbuchar/hapi-route-scope)
+# Glee for Hapi [![Build Status](https://travis-ci.org/nathanbuchar/hapi-glee.svg?branch=master)](https://travis-ci.org/nathanbuchar/hapi-glee)
 
-Don't want `/docs` to show up on production? use `hapi-route-scope`! `hapi-route-scope` allows you to specify environment-specific scopes for your routes with ease.
+Don't want `/docs` to show up on production? use **Glee**! **Glee** allows you to specify environment-specific scopes for your routes with ease.
 
 
 ### Install
 
 ```bash
-$ npm install hapi-route-scope
+$ npm install hapi-glee
 ```
 
 
 ### Usage
 
-#### Register the Plugin
+#### Connection Labeling
 
-To register the plugin, simply follow the typical plugin registration pattern outlined in the Hapi docs [here](http://hapijs.com/tutorials/plugins#loading-a-plugin).
+First, we need to set up the connection labels. **Glee** uses connection labels to determine if a route is within scope. We compare the scope we've set on our route to the labels defined on our connection(s). If one or all of these labels match then the route is allowed, and if not we use the error route.
+
+To set up the server labels, include the `labels` property when setting up a server connection.
 
 ```javascript
-server.register([
-  {
-    register: require('hapi-route-scope'),
-    options: {
-      errorRoute: server.lookup('error'),
-      environment: 'development'
-    }
-  }
-], function (err) {});
+server.connection({
+  port: 8080,
+  labels: ['development']
+});
 ```
 
-##### options
+A more dynamic approach might be:
 
-* `errorRoute` - `object|string` - **Required** This may be either a direct reference to the error route itself, or the `id` of the error route which you would like to handle requested routes that are "out of scope". Follow the instructions below to set up your error route.
+```javascript
+server.connection({
+  port: 8080,
+  labels: process.env.NODE_ENV
+});
+```
 
-* `environment` - `string` - **Optional** The environment with which to test our route scopes against. Default: `process.env.NODE_ENV`.
+The `labels` property may either be a string or an array. By default, labels is set to `[]`
 
 
-#### Setting up Your Error Route
 
-If you don't already have a 404 route set up, simply register the following route after the rest of your routes:
+#### Setting up The Error Route
+
+This will be the route that will be used if the requested route is out of scope. If you don't already have a 404 route set up, simply register the following route after the rest of your routes:
 
 ```javascript
 server.route([
@@ -55,12 +58,35 @@ server.route([
 ]);
 ```
 
-You'll notice the `config.id` property. This is what we use to help `hapi-route-scope` identify the correct route to redirect to if the requested route is out of scope. This `id` must be the same as id that we used to look up the route in the `errorRoute` property when registering `hapi-route-scope`.
+You'll notice the `config.id` property. This is what we use to help **Glee** identify the correct route to redirect to if the requested route is out of scope. This `id` must be the same as string that is used to look up the route in the `errorRoute` property when registering the **Glee** plugin below.
 
 
-#### Setting up Route Scopes
 
-To scope a route to a specific environment, simply add it to the route config. If no scope is specified, then the route will always be available.
+#### Register the Plugin
+
+To register the plugin, simply follow the typical plugin registration pattern outlined in the Hapi docs [here](http://hapijs.com/tutorials/plugins#loading-a-plugin).
+
+```javascript
+server.register([
+  {
+    register: require('Glee'),
+    options: {
+      errorRoute: server.lookup('error')
+    }
+  }
+], function (err) {});
+```
+
+##### options
+
+* `errorRoute` - `object|string` - **Required** This may be either a direct reference to the error route itself, or the `id` of the error route which you would like to handle requested routes that are "out of scope". Follow the instructions below to set up your error route.
+
+
+
+
+#### Route Scoping
+
+To scope a route to a specific label, simply add it to the route config. If no scope is specified, then the route will always be available.
 
 ```javascript
 server.route([
@@ -79,7 +105,7 @@ server.route([
 ])
 ```
 
-`scope` may be either a environment string, or an array of environments. If any of these match the environment that you defined when setting up the plugin, then the route will be available. If not, `hapi-route-scope` will instead route to the 404 page.
+`scope` may be either a string, or an array of strings. If any of these match any of the labels that was defined when setting up the connection, then the route will be available. If not, **Glee** will instead route to the aforementioned error page.
 
 
 

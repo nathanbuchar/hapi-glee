@@ -1,14 +1,14 @@
 /**
- * @fileoverview file_description
+ * @fileoverview Entry point into Glee.
  * @author Nathan Buchar
  */
 
 'use strict';
 
-var scope = require('./src/scope');
+var glee = require('./src/glee');
 
 exports.register = function (server, options, next) {
-  scope(server, options);
+  glee(server, options);
   next();
 };
 
