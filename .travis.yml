@@ -4,7 +4,6 @@ node_js:
   - "0.11"
   - "0.12"
   - "iojs"
-
 notifications:
   email:
     on_success: never
