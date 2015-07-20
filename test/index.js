@@ -36,11 +36,7 @@ process.env.NODE_ENV = 'test';
 lab.experiment('Plugin', function () {
 
   lab.before(function (done) {
-    server = new Hapi.Server({
-      app: {
-        env: env
-      }
-    });
+    server = new Hapi.Server();
 
     server.connection({
       port: process.env.PORT || 3000
@@ -59,7 +55,8 @@ lab.experiment('Plugin', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRouteId: 'error'
+        errorRouteId: 'error',
+        environment: 'test'
       }
     }, function (err) {
       Code.expect(err).to.not.exist();
@@ -71,24 +68,13 @@ lab.experiment('Plugin', function () {
 lab.experiment('Requests', function () {
 
   lab.beforeEach(function (done) {
-    server = new Hapi.Server({
-      app: {
-        env: 'test'
-      }
-    });
+    server = new Hapi.Server();
 
     server.connection({
       port: process.env.PORT || 3000
     });
 
-    server.register({
-      register: Plugin,
-      options: {
-        errorRouteId: 'error'
-      }
-    }, function (err) {
-      done();
-    });
+    done();
   });
 
   lab.afterEach(function (done) {
@@ -108,11 +94,19 @@ lab.experiment('Requests', function () {
       }, errorRoute
     ]);
 
-    server.start(function () {
-      request.get('localhost:3000/test').end(function (err, res) {
-        Code.expect(res).to.exist();
-        Code.expect(res.status).to.equal(200);
-        done();
+    server.register({
+      register: Plugin,
+      options: {
+        errorRouteId: 'error',
+        environment: 'test'
+      }
+    }, function (err) {
+      server.start(function () {
+        request.get('localhost:3000/test').end(function (err, res) {
+          Code.expect(res).to.exist();
+          Code.expect(res.status).to.equal(200);
+          done();
+        });
       });
     });
   });
@@ -133,19 +127,24 @@ lab.experiment('Requests', function () {
       }, errorRoute
     ]);
 
-    server.start(function () {
-      request.get('localhost:3000/test').end(function (err, res) {
-        Code.expect(res).to.exist();
-        Code.expect(res.status).to.equal(200);
-        done();
+    server.register({
+      register: Plugin,
+      options: {
+        errorRouteId: 'error',
+        environment: 'test'
+      }
+    }, function (err) {
+      server.start(function () {
+        request.get('localhost:3000/test').end(function (err, res) {
+          Code.expect(res).to.exist();
+          Code.expect(res.status).to.equal(200);
+          done();
+        });
       });
     });
   });
 
   lab.test('fallback to process.env.NODE_ENV if no env is set', function (done) {
-
-    delete server.settings.app.env;
-
     server.route([
       {
         method: 'GET',
@@ -161,19 +160,23 @@ lab.experiment('Requests', function () {
       }, errorRoute
     ]);
 
-    server.start(function () {
-      request.get('localhost:3000/test').end(function (err, res) {
-        Code.expect(res).to.exist();
-        Code.expect(res.status).to.equal(200);
-        done();
+    server.register({
+      register: Plugin,
+      options: {
+        errorRouteId: 'error'
+      }
+    }, function (err) {
+      server.start(function () {
+        request.get('localhost:3000/test').end(function (err, res) {
+          Code.expect(res).to.exist();
+          Code.expect(res.status).to.equal(200);
+          done();
+        });
       });
     });
   });
 
   lab.test('should return 200 OK when in scope and scope is an array', function (done) {
-
-    server.settings.app.env = 'test';
-
     server.route([
       {
         method: 'GET',
@@ -189,11 +192,19 @@ lab.experiment('Requests', function () {
       }, errorRoute
     ]);
 
-    server.start(function () {
-      request.get('localhost:3000/test').end(function (err, res) {
-        Code.expect(res).to.exist();
-        Code.expect(res.status).to.equal(200);
-        done();
+    server.register({
+      register: Plugin,
+      options: {
+        errorRouteId: 'error',
+        environment: 'test'
+      }
+    }, function (err) {
+      server.start(function () {
+        request.get('localhost:3000/test').end(function (err, res) {
+          Code.expect(res).to.exist();
+          Code.expect(res.status).to.equal(200);
+          done();
+        });
       });
     });
   });
@@ -208,17 +219,25 @@ lab.experiment('Requests', function () {
         },
         config: {
           app: {
-            scope: 'outofscope'
+            scope: 'test'
           }
         }
       }, errorRoute
     ]);
 
-    server.start(function () {
-      request.get('localhost:3000/test').end(function (err, res) {
-        Code.expect(res).to.exist();
-        Code.expect(res.status).to.equal(404);
-        done();
+    server.register({
+      register: Plugin,
+      options: {
+        errorRouteId: 'error',
+        environment: 'outofscope'
+      }
+    }, function (err) {
+      server.start(function () {
+        request.get('localhost:3000/test').end(function (err, res) {
+          Code.expect(res).to.exist();
+          Code.expect(res.status).to.equal(404);
+          done();
+        });
       });
     });
   });

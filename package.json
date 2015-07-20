@@ -1,6 +1,6 @@
 {
   "name": "hapi-route-scope",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Scope routes to specific Node environments.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,12 @@
     "type": "git",
     "url": "https://github.com/nathanbuchar/hapi-route-scope"
   },
-  "keywords": [],
+  "keywords": [
+    "hapi",
+    "route",
+    "scope",
+    "plugin"
+  ],
   "author": "Nathan Buchar <hello@nathanbuchar.com>",
   "license": "MIT",
   "bugs": {

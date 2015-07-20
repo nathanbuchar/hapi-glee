@@ -5,7 +5,7 @@
 
 'use strict';
 
-var scope = require('./lib/scope');
+var scope = require('./src/scope');
 
 exports.register = function (server, options, next) {
   scope(server, options);
