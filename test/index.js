@@ -55,8 +55,7 @@ lab.experiment('Plugin', function () {
     server.register({
       register: Plugin,
       options: {
-        errorRoute: server.lookup('error'),
-        environment: 'test'
+        routes: []
       }
     }, function (err) {
       Code.expect(err).to.not.exist();
@@ -84,21 +83,47 @@ lab.experiment('Requests', function () {
     });
   });
 
-  lab.test('should return 200 OK when no scope is set', function (done) {
-    server.route([
-      {
-        method: 'GET',
-        path: '/test',
-        handler: function (requst, reply) {
-          return reply();
-        }
-      }, errorRoute
-    ]);
-
+  lab.test('should return 200 OK when no config is set', function (done) {
     server.register({
       register: Plugin,
       options: {
-        errorRoute: server.lookup('error')
+        routes: [
+          {
+            method: 'GET',
+            path: '/test',
+            handler: function (requst, reply) {
+              return reply();
+            }
+          }, errorRoute
+        ]
+      }
+    }, function (err) {
+      server.start(function () {
+        request.get('localhost:3000/test').end(function (err, res) {
+          Code.expect(res).to.exist();
+          Code.expect(res.status).to.equal(200);
+          done();
+        });
+      });
+    });
+  });
+
+  lab.test('should return 200 OK when no scope is set', function (done) {
+    server.register({
+      register: Plugin,
+      options: {
+        routes: [
+          {
+            method: 'GET',
+            path: '/test',
+            handler: function (requst, reply) {
+              return reply();
+            },
+            config: {
+              app: {}
+            }
+          }, errorRoute
+        ]
       }
     }, function (err) {
       server.start(function () {
@@ -112,25 +137,23 @@ lab.experiment('Requests', function () {
   });
 
   lab.test('should return 200 OK when in scope and scope is a string', function (done) {
-    server.route([
-      {
-        method: 'GET',
-        path: '/test',
-        handler: function (requst, reply) {
-          return reply();
-        },
-        config: {
-          app: {
-            scope: 'test'
-          }
-        }
-      }, errorRoute
-    ]);
-
     server.register({
       register: Plugin,
       options: {
-        errorRoute: server.lookup('error')
+        routes: [
+          {
+            method: 'GET',
+            path: '/test',
+            handler: function (requst, reply) {
+              return reply();
+            },
+            config: {
+              app: {
+                scope: 'test'
+              }
+            }
+          }, errorRoute
+        ]
       }
     }, function (err) {
       server.start(function () {
@@ -144,25 +167,23 @@ lab.experiment('Requests', function () {
   });
 
   lab.test('should return 200 OK when in scope and scope is an array', function (done) {
-    server.route([
-      {
-        method: 'GET',
-        path: '/test',
-        handler: function (requst, reply) {
-          return reply();
-        },
-        config: {
-          app: {
-            scope: ['test']
-          }
-        }
-      }, errorRoute
-    ]);
-
     server.register({
       register: Plugin,
       options: {
-        errorRoute: server.lookup('error')
+        routes: [
+          {
+            method: 'GET',
+            path: '/test',
+            handler: function (requst, reply) {
+              return reply();
+            },
+            config: {
+              app: {
+                scope: ['test']
+              }
+            }
+          }, errorRoute
+        ]
       }
     }, function (err) {
       server.start(function () {
@@ -176,25 +197,23 @@ lab.experiment('Requests', function () {
   });
 
   lab.test('should return 404 NOT FOUND when not in scope', function (done) {
-    server.route([
-      {
-        method: 'GET',
-        path: '/test',
-        handler: function (requst, reply) {
-          return reply();
-        },
-        config: {
-          app: {
-            scope: 'outofscope'
-          }
-        }
-      }, errorRoute
-    ]);
-
     server.register({
       register: Plugin,
       options: {
-        errorRoute: 'error'
+        routes: [
+          {
+            method: 'GET',
+            path: '/test',
+            handler: function (requst, reply) {
+              return reply();
+            },
+            config: {
+              app: {
+                scope: 'outofscope'
+              }
+            }
+          }, errorRoute
+        ]
       }
     }, function (err) {
       server.start(function () {
@@ -208,25 +227,23 @@ lab.experiment('Requests', function () {
   });
 
   lab.test('should handle the error route as an id string', function (done) {
-    server.route([
-      {
-        method: 'GET',
-        path: '/test',
-        handler: function (requst, reply) {
-          return reply();
-        },
-        config: {
-          app: {
-            scope: 'outofscope'
-          }
-        }
-      }, errorRoute
-    ]);
-
     server.register({
       register: Plugin,
       options: {
-        errorRoute: server.lookup('error')
+        routes: [
+          {
+            method: 'GET',
+            path: '/test',
+            handler: function (requst, reply) {
+              return reply();
+            },
+            config: {
+              app: {
+                scope: 'outofscope'
+              }
+            }
+          }, errorRoute
+        ]
       }
     }, function (err) {
       server.start(function () {

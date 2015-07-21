@@ -5,7 +5,7 @@
 
 'use strict';
 
-var glee = require('./src/glee');
+var glee = require('./lib/glee');
 
 exports.register = function (server, options, next) {
   glee(server, options);

@@ -12,9 +12,15 @@ $ npm install glee
 
 ### Usage
 
-#### Connection Labeling
+1. [Set up connection labels](#setting-up-connection-labels)
+2. [Set up routes](#setting-up-the-routes)
+3. [Register the plugin](#registering-the-plugin)
 
-First, we need to set up the connection labels. **Glee** uses connection labels to determine if a route is within scope. We compare the scope we've set on our route to the labels defined on our connection(s). If one or all of these labels match then the route is allowed, and if not we use the error route.
+
+
+#### Setting up Connection labels
+
+First, we need to set up the connection labels. **Glee** uses connection labels to determine if a route is within scope. We compare the scope we've set on our route to the labels defined on our connection(s). If one or all of these labels match then the route will be registered.
 
 To set up the server labels, include the `labels` property when setting up a server connection.
 
@@ -34,37 +40,56 @@ server.connection({
 });
 ```
 
-The `labels` property may either be a string or an array. By default, labels is set to `[]`
+The `labels` property may either be a string or an array. By default, labels is set to `[]`.
+
+More information about server connections can be found in the [Hapi docs](http://hapijs.com/api#serverconnections).
 
 
 
-#### Setting up The Error Route
+#### Setting up the Routes
 
-This will be the route that will be used if the requested route is out of scope. If you don't already have a 404 route set up, simply register the following route after the rest of your routes:
+Second, we'll need to format our routes so that **Glee** can filter them by scope. You'll likely want to save your routes in a separate file called `routes.js`.
+
+Then, to add a scope to a route, simply enter the scope as the `config.app.scope` property. `scope` may be either a string, or an array of strings. If any of these match any of the labels that was defined when setting up the connection, then the route will be registered with the server.
+
+If a route does not explicitly define a scope, it is assumed to be always available, and will be registered.
 
 ```javascript
-server.route([
-  ...
+// routes.js
+
+module.exports = [
   {
     method: 'GET',
-    path: '/{path*}',
-    handler: function (request, reply) {
-      return reply('Page not found').code(404);
+    path: '/',
+    handler(request, reply) {
+      reply('Home Page');
+    }
+  }, {
+    method: 'GET',
+    path: '/docs',
+    handler(request, reply) {
+      reply('Development-only docs');
     },
     config: {
-      id: 'error'
+      app: {
+        scope: ['development']
+      }
+    }
+  }, {
+    method: 'GET',
+    path: '/{path*}',
+    handler(request, reply) {
+      reply('Page not found.').code(404);
     }
   }
-]);
+];
 ```
 
-You'll notice the `config.id` property. This is what we use to help **Glee** identify the correct route to redirect to if the requested route is out of scope. This `id` must be the same as string that is used to look up the route in the `errorRoute` property when registering the **Glee** plugin below.
+**NOTE** Be sure to export your routes as an array.
 
+#### Registering the Plugin
 
-
-#### Register the Plugin
-
-To register the plugin, simply follow the typical plugin registration pattern outlined in the Hapi docs [here](http://hapijs.com/tutorials/plugins#loading-a-plugin).
+This plugin will handle route registration, so you need not call `server.route(require('./routes'))`. To register the plugin, simply follow the typical plugin registration pattern outlined in the Hapi docs [here](http://hapijs.com/tutorials/plugins#loading-a-plugin).
 
 ```javascript
 var Glee = require('glee');
@@ -73,7 +98,7 @@ server.register([
   {
     register: Glee,
     options: {
-      errorRoute: server.lookup('error')
+      routes: require('./routes')
     }
   }
 ], function (err) {});
@@ -81,33 +106,7 @@ server.register([
 
 ##### options
 
-* `errorRoute` - `object|string` - **Required** This may be either a direct reference to the error route itself, or the `id` of the error route which you would like to handle requested routes that are "out of scope". Follow the instructions below to set up your error route.
-
-
-
-
-#### Route Scoping
-
-To scope a route to a specific label, simply add it to the route config. If no scope is specified, then the route will always be available.
-
-```javascript
-server.route([
-  {
-    method: 'GET',
-    path: '/docs'
-    handler: function (request, reply) {
-      // Route handler.
-    },
-    config: {
-      app: {
-        scope: ['development', 'staging']
-      }
-    }
-  }
-])
-```
-
-`scope` may be either a string, or an array of strings. If any of these match any of the labels that was defined when setting up the connection, then the route will be available. If not, **Glee** will instead route to the aforementioned error page.
+* `routes` - `array` - **Required** The routes that we defined in [step 2](#setting-up-the-routes).
 
 
 

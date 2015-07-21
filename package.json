@@ -30,6 +30,7 @@
   "dependencies": {
     "code": "^1.4.1",
     "lab": "^5.13.0",
+    "lodash": "^3.10.0",
     "superagent": "^1.2.0"
   }
 }
