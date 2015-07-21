@@ -120,7 +120,9 @@ lab.experiment('Requests', function () {
               return reply();
             },
             config: {
-              app: {}
+              plugins: {
+                glee: {}
+              }
             }
           }, errorRoute
         ]
@@ -148,8 +150,10 @@ lab.experiment('Requests', function () {
               return reply();
             },
             config: {
-              app: {
-                scope: 'test'
+              plugins: {
+                glee: {
+                  scope: 'test'
+                }
               }
             }
           }, errorRoute
@@ -178,8 +182,10 @@ lab.experiment('Requests', function () {
               return reply();
             },
             config: {
-              app: {
-                scope: ['test']
+              plugins: {
+                glee: {
+                  scope: ['test']
+                }
               }
             }
           }, errorRoute
@@ -208,8 +214,10 @@ lab.experiment('Requests', function () {
               return reply();
             },
             config: {
-              app: {
-                scope: 'outofscope'
+              plugins: {
+                glee: {
+                  scope: 'outofscope'
+                }
               }
             }
           }, errorRoute
@@ -238,8 +246,10 @@ lab.experiment('Requests', function () {
               return reply();
             },
             config: {
-              app: {
-                scope: 'outofscope'
+              plugins: {
+                glee: {
+                  scope: 'outofscope'
+                }
               }
             }
           }, errorRoute

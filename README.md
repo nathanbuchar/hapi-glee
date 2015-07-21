@@ -50,7 +50,7 @@ More information about server connections can be found in the [Hapi docs](http:/
 
 Second, we'll need to format our routes so that **Glee** can filter them by scope. You'll likely want to save your routes in a separate file called `routes.js`.
 
-Then, to add a scope to a route, simply enter the scope as the `config.app.scope` property. `scope` may be either a string, or an array of strings. If any of these match any of the labels that was defined when setting up the connection, then the route will be registered with the server.
+Then, to add a scope to a route, simply enter the scope as the `config.plugins.glee.scope` property. `scope` may be either a string, or an array of strings. If any of these match any of the labels that was defined when setting up the connection, then the route will be registered with the server.
 
 If a route does not explicitly define a scope, it is assumed to be always available, and will be registered.
 
@@ -71,8 +71,10 @@ module.exports = [
       reply('Development-only docs');
     },
     config: {
-      app: {
-        scope: ['development']
+      plugins: {
+        glee: {
+          scope: ['development']
+        }
       }
     }
   }, {
