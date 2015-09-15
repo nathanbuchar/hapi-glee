@@ -1,6 +1,6 @@
 {
   "name": "glee",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Specify environment-specific scopes for your routes with ease.",
   "main": "index.js",
   "scripts": {

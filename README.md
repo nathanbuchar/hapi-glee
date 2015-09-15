@@ -1,4 +1,4 @@
-# Glee for Hapi [![Build Status](https://travis-ci.org/nathanbuchar/glee.svg?branch=master)](https://travis-ci.org/nathanbuchar/glee)
+# Glee for Hapi
 
 Don't want to show certain test routes on production? use **Glee**! **Glee** allows you to specify environment-specific scopes for your routes with ease. It utilizes [minimatch](https://www.npmjs.com/package/minimatch) to compare a route's optional scope to the current node environment, and will filter out any routes from the array that don't match the criteria before registering them.
 
