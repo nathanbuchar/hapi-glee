@@ -14,5 +14,3 @@
 *.zip
 
 node_modules
-
-test/artifacts
