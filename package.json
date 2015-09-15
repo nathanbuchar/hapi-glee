@@ -1,12 +1,8 @@
 {
   "name": "glee",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Specify environment-specific scopes for your routes with ease.",
   "main": "index.js",
-  "scripts": {
-    "test": "./node_modules/lab/bin/lab -c",
-    "test-cover": "./node_modules/lab/bin/lab -c -r html -o ./test/artifacts/coverage.html && open ./test/artifacts/coverage.html"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/nathanbuchar/glee"
@@ -23,15 +19,8 @@
   "bugs": {
     "url": "https://github.com/nathanbuchar/glee/issues"
   },
-  "homepage": "",
-  "devDependencies": {
-    "hapi": "^8.x.x"
-  },
   "dependencies": {
-    "code": "^1.4.1",
-    "lab": "^5.13.0",
     "lodash": "^3.10.0",
-    "minimatch": "^2.0.10",
-    "superagent": "^1.2.0"
+    "minimatch": "^2.0.10"
   }
 }
