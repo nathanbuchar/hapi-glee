@@ -1,11 +1,11 @@
 {
   "name": "glee",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Specify environment-specific scopes for your routes with ease.",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nathanbuchar/glee"
+    "url": "https://github.com/nathanbuchar/hapi-glee"
   },
   "keywords": [
     "hapi",
@@ -17,7 +17,7 @@
   "author": "Nathan Buchar <hello@nathanbuchar.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nathanbuchar/glee/issues"
+    "url": "https://github.com/nathanbuchar/hapi-glee/issues"
   },
   "dependencies": {
     "lodash": "^3.10.0",
